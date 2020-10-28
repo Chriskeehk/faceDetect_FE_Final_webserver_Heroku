@@ -1,12 +1,15 @@
 import React from 'react';
 import './App.css';
-import Nav from './component/Nav/Nav';
+import Navigation from './component/Navigation/Navigation';
 import Logo from './component/Logo/Logo';
 import ImageLinkForm from './component/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './component/FaceRecognition/FaceRecognition';
 import Rank from './component/Rank/Rank';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
+import Signin from './component/Signin/Signin';
+import Register from './component/Register/Register';
+import tachyons from 'tachyons';
 
 var mapData = [];
 
@@ -38,16 +41,43 @@ var mapData = [];
 	constructor() {
   		super();
   		this.state = {
-  			input: 'https://variety.com/wp-content/uploads/2020/10/blackpink.jpg',
-  			imageUrl: "",
+  			input:'https://variety.com/wp-content/uploads/2020/10/blackpink.jpg',
+  			imageUrl: '',
   			box: {},
-  			no_of_people: 0
+  			no_of_people: 0,
+  			route: 'signin',
+  			isSignedIn: false,
+  			user : {
+  				id: '',
+				name: '',
+				email: '',
+				entries: 0,
+				joined: ''
+  			}
+
   		}
   }
 
+  loadUser = (data) => {
+  	this.setState({user: {
+  		id: data.id,
+		name: data.name,
+		email: data.email,
+		entries: data.entries,
+		joined: data.joined
+  	}})
+  	// console.log(data);
+  }
+
+ //  componentDidMount() {
+	// fetch('http://localhost:3001')
+	// .then(response => response.json())
+	// .then(console.log)
+ //  }
+
   calculateFaceLocation = (data) => {
 
-  		const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+  		// const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
 		const clarifaiFaceArray = data.outputs[0].data.regions;
 		const image  = document.getElementById('inputimage');
 		const width  = Number(image.width);
@@ -98,9 +128,37 @@ var mapData = [];
 
   onButtonSubmit = (event) => {
 	    console.log('click');
-
+	   
 	    this.setState({imageUrl: this.state.input}); // setState is async
-	    // AI Model
+	   
+		app.models
+		    .predict(
+		    	Clarifai.FACE_DETECT_MODEL, 
+				this.state.input)
+		    .then(response => {
+		    	fetch('http://localhost:3001/image', {
+		    		method: 'put',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({
+						id: this.state.user.id
+					})
+		    	})
+		    .then(response => response.json())
+		    .then(count => {
+		    		this.setState(Object.assign(this.state.user, {entries: count}))
+
+		    		// If you use below setState, the rest for field will be deleted
+		    // 		this.setState({user: {
+						// entries: count
+				  // 	}})
+		})    		
+			
+	    this.displayFaceBox(this.calculateFaceLocation(response))
+	    })
+		    
+		.catch(err => console.log(err));
+
+		// AI Model
 		  // GENERAL_MODEL: 'aaa03c23b3724a16a56b629203edc62c',
 		  // FOOD_MODEL: 'bd367be194cf45149e75f01d59f77ba7',
 		  // TRAVEL_MODEL: 'eee28c313d69466f836ab83287a54ed9',
@@ -124,26 +182,46 @@ var mapData = [];
 
 		// console.log(this.state.input);
 		// console.log(this.state.inputUrl);
-		app.models
-		    .predict(
-		    	Clarifai.FACE_DETECT_MODEL, 
-				this.state.input)
-		    .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
-		    .catch(err => console.log(err));
   }
 
   // .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
 
+  onRouteChange = (route) => {
+  	 if (route === 'home') {
+  	 	this.setState({isSignedIn: true})
+  	 } else {
+  	 	this.setState({isSignedIn:false})
+  	 }
+  	 this.setState({route: route});
+  }
+
+
+
   render() {
+  	  // const {isSignedIn, imageUrl, route, box, no_of_people} = this.state;
+  	  const {isSignedIn, imageUrl, route, no_of_people, input} = this.state;
       return (
           <div>
-         	  <Particles className='particles'
-                params={particlesOptions2}/>
-              <Nav />
-              <Logo />
-              <Rank no_of_people={this.state.no_of_people} />
-              <ImageLinkForm onButtonSubmit={this.onButtonSubmit} onInputChange={this.onInputChange}/>
-              <FaceRecognition box={mapData} imageUrl={this.state.imageUrl}/>
+         	  <Particles className='particles' params={particlesOptions2}/>
+              <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} /> 
+
+              { route === 'home' 
+	              ? <div>
+			              <Logo />
+			              <Rank no_of_people={no_of_people} user={this.state.user}/>
+			              <ImageLinkForm 
+			              		onButtonSubmit={this.onButtonSubmit} 
+			              		onInputChange={this.onInputChange}
+			              />
+			              <FaceRecognition box={mapData} imageUrl={imageUrl}/>
+		            </div>
+		          : (
+		          	  route === 'signin' 
+		          	  ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+		              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+		            )
+	          }
+
           {/*If I use box={box}, it will fail to run box.map at child class */}
           </div>
         )
