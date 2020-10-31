@@ -36,6 +36,22 @@ var mapData = [];
 		}
 	}
   }
+
+  const initialState = {
+  			input:'https://variety.com/wp-content/uploads/2020/10/blackpink.jpg',
+  			imageUrl: '',
+  			box: {},
+  			no_of_people: 0,
+  			route: 'signin',
+  			isSignedIn: false,
+  			user : {
+  				id: '',
+				name: '',
+				email: '',
+				entries: 0,
+				joined: ''
+  			}
+  }
             
   class App extends React.Component {
 	constructor() {
@@ -146,12 +162,8 @@ var mapData = [];
 		    .then(response => response.json())
 		    .then(count => {
 		    		this.setState(Object.assign(this.state.user, {entries: count}))
-
-		    		// If you use below setState, the rest for field will be deleted
-		    // 		this.setState({user: {
-						// entries: count
-				  // 	}})
-		})    		
+			})    
+			.catch(console.log)		
 			
 	    this.displayFaceBox(this.calculateFaceLocation(response))
 	    })
@@ -190,7 +202,7 @@ var mapData = [];
   	 if (route === 'home') {
   	 	this.setState({isSignedIn: true})
   	 } else {
-  	 	this.setState({isSignedIn:false})
+  	 	this.setState(initialState)
   	 }
   	 this.setState({route: route});
   }
