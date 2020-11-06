@@ -24,7 +24,7 @@ onPasswordChange = (event) => {
 
 onSubmitRegister = () => {
 		console.log("Start Client register");
-		fetch('http://localhost:3001/register', {
+		fetch('https://obscure-coast-05662.herokuapp.com/register', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({

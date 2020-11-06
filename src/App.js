@@ -81,11 +81,6 @@ var mapData = [];
   	// console.log(data);
   }
 
- //  componentDidMount() {
-	// fetch('http://localhost:3001')
-	// .then(response => response.json())
-	// .then(console.log)
- //  }
 
   calculateFaceLocation = (data) => {
 
@@ -143,7 +138,7 @@ var mapData = [];
 	   
 	    this.setState({imageUrl: this.state.input}); // setState is async
 	    
-		    fetch('http://localhost:3001/imageurl', {
+		    fetch('https://obscure-coast-05662.herokuapp.com/imageurl', {
 		    		method: 'post',
 					headers: {'Content-Type': 'application/json'},
 					body: JSON.stringify({
@@ -152,7 +147,7 @@ var mapData = [];
 		    })
 			.then(response => response.json())
 		    .then(response => {
-		    	fetch('http://localhost:3001/image', {
+		    	fetch('https://obscure-coast-05662.herokuapp.com/image', {
 		    		method: 'put',
 					headers: {'Content-Type': 'application/json'},
 					body: JSON.stringify({
