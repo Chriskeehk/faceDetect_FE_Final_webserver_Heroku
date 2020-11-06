@@ -18,7 +18,7 @@ class Signin extends React.Component {
 	}
 
 	onSubmitSignIn = () => {
-		fetch('https://react.hkmouse.com/server/signin', {
+		fetch('http://localhost:3001/signin', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -27,9 +27,9 @@ class Signin extends React.Component {
 			})
 		})
 		.then(response => response.json())
-		.then(data => {
-			if (data !== 'error logging in') {
-				this.props.loadUser(data)
+		.then(user => {
+			if (user.id) {
+				this.props.loadUser(user)
 				this.props.onRouteChange('home')
 			}
 		})

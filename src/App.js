@@ -6,16 +6,12 @@ import ImageLinkForm from './component/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './component/FaceRecognition/FaceRecognition';
 import Rank from './component/Rank/Rank';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
+
 import Signin from './component/Signin/Signin';
 import Register from './component/Register/Register';
 import tachyons from 'tachyons';
 
 var mapData = [];
-
-  const app = new Clarifai.App({
-		 apiKey: 'c75512e42bd64032b45f220afaf0ccb7'
-  });
 
   const particlesOptions2 = {
 	particles: {
@@ -146,11 +142,15 @@ var mapData = [];
 	    console.log('click');
 	   
 	    this.setState({imageUrl: this.state.input}); // setState is async
-	   
-		app.models
-		    .predict(
-		    	Clarifai.FACE_DETECT_MODEL, 
-				this.state.input)
+	    
+		    fetch('http://localhost:3001/imageurl', {
+		    		method: 'post',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({
+						input: this.state.input
+					})
+		    })
+			.then(response => response.json())
 		    .then(response => {
 		    	fetch('http://localhost:3001/image', {
 		    		method: 'put',
@@ -217,7 +217,7 @@ var mapData = [];
          	  <Particles className='particles' params={particlesOptions2}/>
               <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} /> 
 
-              { route === 'home' 
+              { route === 'home'   
 	              ? <div>
 			              <Logo />
 			              <Rank no_of_people={no_of_people} user={this.state.user}/>
