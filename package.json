@@ -1,6 +1,5 @@
 {
   "name": "Face",
-  // "homepage": "https://react.hkmouse.com/face",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
