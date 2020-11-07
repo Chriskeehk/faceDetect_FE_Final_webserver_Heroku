@@ -24,7 +24,7 @@ onPasswordChange = (event) => {
 
 onSubmitRegister = () => {
 		console.log("Start Client register");
-		fetch('https://obscure-coast-05662.herokuapp.com/register', {
+		fetch('https://facedetect-chriskeehk-server.herokuapp.com/register',   {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
