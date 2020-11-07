@@ -19,10 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-     "heroku-prebuild": "echo This runs before Heroku installs dependencies.",
-     "heroku-postbuild": "echo This runs after Heroku installs dependencies, but before Heroku prunes and caches dependencies.",
-     "heroku-cleanup": "echo This runs after Heroku prunes and caches dependencies."
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
