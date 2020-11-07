@@ -138,7 +138,7 @@ var mapData = [];
 	   
 	    this.setState({imageUrl: this.state.input}); // setState is async
 	    
-		    fetch('https://obscure-coast-05662.herokuapp.com/imageurl', {
+		    fetch('https://facedetect-chriskeehk-server.herokuapp.com/imageurl', {
 		    		method: 'post',
 					headers: {'Content-Type': 'application/json'},
 					body: JSON.stringify({
@@ -147,7 +147,7 @@ var mapData = [];
 		    })
 			.then(response => response.json())
 		    .then(response => {
-		    	fetch('https://obscure-coast-05662.herokuapp.com/image', {
+		    	fetch('https://facedetect-chriskeehk-server.herokuapp.com/image', {
 		    		method: 'put',
 					headers: {'Content-Type': 'application/json'},
 					body: JSON.stringify({
