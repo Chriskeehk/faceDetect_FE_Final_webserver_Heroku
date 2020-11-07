@@ -12,17 +12,16 @@
     "react-particles-js": "^3.4.0",
     "react-scripts": "3.4.4",
     "react-tilt": "^0.1.4",
-    "serve": "^11.3.2",
     "tachyons": "^4.12.0"
   },
   "scripts": {
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-prebuild": "echo This runs before Heroku installs dependencies.",
-    "heroku-postbuild": "echo This runs after Heroku installs dependencies, but before Heroku prunes and caches dependencies.",
-    "heroku-cleanup": "echo This runs after Heroku prunes and caches dependencies."
+     "heroku-prebuild": "echo This runs before Heroku installs dependencies.",
+     "heroku-postbuild": "echo This runs after Heroku installs dependencies, but before Heroku prunes and caches dependencies.",
+     "heroku-cleanup": "echo This runs after Heroku prunes and caches dependencies."
   },
   "eslintConfig": {
     "extends": "react-app"
