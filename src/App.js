@@ -8,7 +8,9 @@ import Rank from './component/Rank/Rank';
 import Particles from 'react-particles-js';
 
 import Signin from './component/Signin/Signin';
+
 import Register from './component/Register/Register';
+
 import tachyons from 'tachyons';
 
 var mapData = [];
